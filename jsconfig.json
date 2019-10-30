@@ -1,0 +1,18 @@
+// jsconfig.json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@@": ["src/components"],
+      "common": ["src/common"],
+      "styl": ["src/common/stylus"],
+      "api": ["src/api"],
+      "base": ["src/base"]
+    },
+    "target": "ES6",
+    "module": "es6",
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
