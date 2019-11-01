@@ -30,6 +30,7 @@ export default {
       const VIDEO_WIDTH = window.innerWidth
       const VIDEO_HEIGHT = 200
 
+      let that = this
       let vid = this.vid
       let OPTIONS = {
         controls: true, // 控制条
@@ -41,8 +42,17 @@ export default {
           { src: this.src, type: 'video/mp4' }
         ]
       }
-      videojs(vid, OPTIONS, function onPlayerReady () {
-
+      videojs(vid, OPTIONS, function () {
+        this.load()
+        this.on('play', function () {
+          that.$emit('play')
+        })
+        this.on('pause', function () {
+          that.$emit('pause')
+        })
+        this.on('ready', function () {
+          that.$emit('ready')
+        })
       })
     }
   }

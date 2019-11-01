@@ -10,6 +10,7 @@ import {
 const state = {
   singer: {},
   playing: false,
+  videoState: false,
   fullScreen: false,
   playlist: [],
   sequenceList: [],

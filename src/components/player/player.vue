@@ -155,7 +155,8 @@ export default {
     ...mapGetters([
       'fullScreen',
       'playing',
-      'currentIndex'
+      'currentIndex',
+      'videoState'
     ])
   },
   created () {
@@ -401,7 +402,8 @@ export default {
       }
     },
     ...mapMutations({
-      setFullScreen: 'SET_FULL_SCREEN'
+      setFullScreen: 'SET_FULL_SCREEN',
+      setVideoState: 'SET_VIDEO_STATE'
     }),
     ...mapActions([
       'savePlayHistory'

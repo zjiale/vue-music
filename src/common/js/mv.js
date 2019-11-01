@@ -12,6 +12,7 @@ export default class Mv {
     this.name = name
     this.image = image
     this.singer = singer
+    this.sid = sid
     this.vid = vid
     this.url = url
     this.avatar = `https://y.gtimg.cn/music/photo_new/T001R300x300M000${sid}.jpg?max_age=2592000`

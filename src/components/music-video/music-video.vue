@@ -1,11 +1,11 @@
 <template>
-  <div class="video-cotent">
-    <scroll class="video-list" :data="mvList">
+  <div class="video-cotent" ref="videoContent">
+    <scroll ref="videoList" class="video-list" :data="mvList">
       <ul>
         <li class="item" ref="item" v-for="item in mvList" :key="item.vid">
-          <base-video :vid="item.vid" :src="item.url" :poster="item.image"></base-video>
+          <base-video :vid="item.vid" :src="item.url" :poster="item.image" @play="play"></base-video>
           <div class="video-info">
-            <div class="singer">
+            <div class="singer" @click="selectSinger(item)">
               <img class="avatar" v-lazy="item.avatar" />
               <span class="name" v-html="item.singer"></span>
             </div>
@@ -20,20 +20,50 @@
 <script type="text/ecmascript-6">
 import { getMvList, getMvUrl } from 'api/mv'
 import { createMv } from 'common/js/mv'
+import { playlistMixin } from 'common/js/mixin'
+import { mapMutations, mapGetters } from 'vuex'
+import Singer from 'common/js/singer'
 import BaseVideo from 'base/base-video/base-video'
 import Scroll from 'base/scroll/scroll'
 
 export default {
+  mixins: [playlistMixin],
   data () {
     return {
-      mvList: []
+      mvList: [],
+      mvHeight: 0
     }
   },
   created () {
-    console.log(window.innerHeight)
     this._getMvList()
   },
+  computed: {
+    ...mapGetters(([
+      'playing'
+    ]))
+  },
   methods: {
+    handlePlaylist (playlist) {
+      const bottom = playlist.length > 0 ? '60px' : 0
+
+      this.$refs.videoContent.style.bottom = bottom
+      this.$refs.videoList.refresh()
+    },
+    selectSinger (item) {
+      let singer = new Singer({
+        id: item.sid,
+        name: item.singer
+      })
+      this.$router.push({
+        path: `/singer/${item.sid}`
+      })
+      this.setSinger(singer)
+    },
+    play () {
+      if (this.playing) {
+        this.setPlayingState(!this.playing)
+      }
+    },
     _getMvList () {
       getMvList().then((res) => {
         let { list } = res.data.mv
@@ -76,17 +106,24 @@ export default {
     },
     _calculateHeight () {
       const item = this.$refs.item
+      let offsetHeight = 0
       for (let i = 0; i < item.length; i++) {
         let mv = item[i]
-        console.log(mv.offsetHeight + ' ' + mv.offsetWidth)
+        offsetHeight = mv.offsetHeight
       }
-    }
+      return offsetHeight
+    },
+    ...mapMutations({
+      setSinger: 'SET_SINGER',
+      setPlayingState: 'SET_PLAYING_STATE',
+      setVideoState: 'SET_VIDEO_STATE'
+    })
   },
   watch: {
     // 异步加载的数据需要在watch观察数据然后再进行dom操作
     mvList () {
       setTimeout(() => {
-        this._calculateHeight()
+        this.mvHeight = this._calculateHeight()
       }, 20)
     }
   },
