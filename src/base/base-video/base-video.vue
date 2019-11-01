@@ -1,6 +1,6 @@
 <template>
-  <div class="video-cotent">
-    <video id="myVideo" class="video-js vjs-big-play-centered"></video>
+  <div>
+    <video :id="vid" class="video-js vjs-big-play-centered"></video>
   </div>
 </template>
 
@@ -9,7 +9,15 @@ import videojs from 'video.js'
 
 export default {
   props: {
-    source: {
+    vid: {
+      type: String,
+      default: ''
+    },
+    src: {
+      type: String,
+      default: ''
+    },
+    poster: {
       type: String,
       default: ''
     }
@@ -20,35 +28,21 @@ export default {
   methods: {
     initVideo () {
       const VIDEO_WIDTH = window.innerWidth
+      const VIDEO_HEIGHT = 200
 
-      // eslint-disable-next-line
-      var player = videojs('myVideo', {
+      let vid = this.vid
+      let OPTIONS = {
         controls: true, // 控制条
         preload: 'none', // 是否自动加载
         width: VIDEO_WIDTH,
-        height: '200',
+        height: VIDEO_HEIGHT,
+        poster: this.poster,
         sources: [
-          { src: this.source, type: 'video/mp4' }
+          { src: this.src, type: 'video/mp4' }
         ]
-      }, function () {
-        // var that = this
-        // that.on('pause', function () {
-        //   console.log('pause:' + old_time)
-        // })
-        // that.on('play', function () {
-        //   console.log('playing:' + this.currentTime())
-        // })
-        // that.on('seeked', function () {
-        //   new_time = this.currentTime()
-        //   console.log('seeked:' + this.currentTime())
-        //   if (old_time) {
-        //     console.log(new_time > old_time ? '拖动快进' : '拖动后退')
-        //   }
-        // })
-        // that.on('ended', function () {
-        //   console.log('ended:' + this.currentTime())
-        //   console.log('duration:' + this.duration())
-        // })
+      }
+      videojs(vid, OPTIONS, function onPlayerReady () {
+
       })
     }
   }

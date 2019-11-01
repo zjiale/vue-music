@@ -65,20 +65,6 @@ module.exports = {
           console.log(e)
         })
       })
-      app.get('/api/getMvList', bodyParser.json(), function (req, res) {
-        const url = 'https://u.y.qq.com/cgi-bin/musicu.fcg'
-        axios.post(url, req.body, {
-          headers: {
-            referer: 'https://y.qq.com/',
-            origin: 'https://y.qq.com/',
-            'Content-type': 'text/plain; charset=utf-8'
-          }
-        }).then((response) => {
-          res.json(response.data)
-        }).catch((e) => {
-          console.log(e)
-        })
-      })
       app.get('/api/getCdInfo', function (req, res) {
         var url = 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg'
         axios.get(url, {
